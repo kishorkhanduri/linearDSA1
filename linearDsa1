@@ -1,0 +1,218 @@
+Q1. Find all pairs of an integer array whose sum is equal to a given number
+
+function findPairs(arr, sum) {
+    const pairs = [];
+    const seen = new Set();
+
+    for (let num of arr) {
+        const complement = sum - num;
+        if (seen.has(complement)) {
+            pairs.push([num, complement]);
+        }
+        seen.add(num);
+    }
+
+    return pairs;
+}
+
+// Example usage:
+const arr1 = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const sum1 = 10;
+console.log(findPairs(arr1, sum1));
+
+
+Q2. Reverse an array in place
+function reverseArray(arr) {
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (left < right) {
+        [arr[left], arr[right]] = [arr[right], arr[left]];
+        left++;
+        right--;
+    }
+    return arr;
+}
+
+// Example usage:
+const arr2 = [1, 2, 3, 4, 5];
+console.log(reverseArray(arr2));
+
+
+Q3. Check if two strings are a rotation of each other
+function areRotations(str1, str2) {
+    if (str1.length !== str2.length) return false;
+    return (str1 + str1).includes(str2);
+}
+
+// Example usage:
+const str1 = "abcd";
+const str2 = "cdab";
+console.log(areRotations(str1, str2));
+
+
+Q4. Print the first non-repeated character from a string
+function firstNonRepeatedChar(str) {
+    const charCount = {};
+
+    for (let char of str) {
+        charCount[char] = (charCount[char] || 0) + 1;
+    }
+
+    for (let char of str) {
+        if (charCount[char] === 1) {
+            return char;
+        }
+    }
+
+    return null;
+}
+
+// Example usage:
+const str3 = "swiss";
+console.log(firstNonRepeatedChar(str3));
+
+
+Q5. Tower of Hanoi algorithm
+function towerOfHanoi(n, fromRod, toRod, auxRod) {
+    if (n === 1) {
+        console.log(`Move disk 1 from rod ${fromRod} to rod ${toRod}`);
+        return;
+    }
+    towerOfHanoi(n - 1, fromRod, auxRod, toRod);
+    console.log(`Move disk ${n} from rod ${fromRod} to rod ${toRod}`);
+    towerOfHanoi(n - 1, auxRod, toRod, fromRod);
+}
+
+// Example usage:
+const n = 3; // Number of disks
+towerOfHanoi(n, 'A', 'C', 'B');
+
+
+
+Q6. Convert postfix to prefix expression
+function postfixToPrefix(postfix) {
+    const stack = [];
+
+    for (let char of postfix) {
+        if (isOperator(char)) {
+            const op1 = stack.pop();
+            const op2 = stack.pop();
+            const expression = char + op2 + op1;
+            stack.push(expression);
+        } else {
+            stack.push(char);
+        }
+    }
+
+    return stack.pop();
+}
+
+function isOperator(char) {
+    return ['+', '-', '*', '/'].includes(char);
+}
+
+// Example usage:
+const postfix = "AB+C*";
+console.log(postfixToPrefix(postfix));
+
+
+Q7. Convert prefix expression to infix expression
+function prefixToInfix(prefix) {
+    const stack = [];
+
+    for (let i = prefix.length - 1; i >= 0; i--) {
+        const char = prefix[i];
+        if (isOperator(char)) {
+            const op1 = stack.pop();
+            const op2 = stack.pop();
+            const expression = `(${op1}${char}${op2})`;
+            stack.push(expression);
+        } else {
+            stack.push(char);
+        }
+    }
+
+    return stack.pop();
+}
+
+function isOperator(char) {
+    return ['+', '-', '*', '/'].includes(char);
+}
+
+// Example usage:
+const prefix = "*+AB-CD";
+console.log(prefixToInfix(prefix));
+
+
+
+Q8. Check if all the brackets are closed in a given code snippet
+function areBracketsClosed(code) {
+    const stack = [];
+    const brackets = {
+        '(': ')',
+        '{': '}',
+        '[': ']'
+    };
+
+    for (let char of code) {
+        if (brackets[char]) {
+            stack.push(char);
+        } else if (Object.values(brackets).includes(char)) {
+            if (brackets[stack.pop()] !== char) {
+                return false;
+            }
+        }
+    }
+
+    return stack.length === 0;
+}
+
+// Example usage:
+const codeSnippet = "{[()]}";
+console.log(areBracketsClosed(codeSnippet));
+
+
+Q9. Reverse a stack
+function reverseStack(stack) {
+    if (stack.length === 0) return;
+
+    const item = stack.pop();
+    reverseStack(stack);
+    insertAtBottom(stack, item);
+}
+
+function insertAtBottom(stack, item) {
+    if (stack.length === 0) {
+        stack.push(item);
+    } else {
+        const top = stack.pop();
+        insertAtBottom(stack, item);
+        stack.push(top);
+    }
+}
+
+// Example usage:
+const stack = [1, 2, 3, 4, 5];
+reverseStack(stack);
+console.log(stack);
+
+
+
+Q10. Find the smallest number using a stack
+function findSmallestNumber(stack) {
+    let min = Infinity;
+
+    while (stack.length > 0) {
+        const item = stack.pop();
+        if (item < min) {
+            min = item;
+        }
+    }
+
+    return min;
+}
+
+// Example usage:
+const stack2 = [3, 5, 1, 2, 4];
+console.log(findSmallestNumber(stack2));
